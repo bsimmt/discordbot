@@ -5,6 +5,7 @@ import random
 import markovify
 import os
 import youtube_dl
+import pyowm
 
 ADMINS = []
 with open(os.getcwd() + "/admins.txt", "r") as file:
@@ -73,6 +74,25 @@ def get_soundlist():
 		sound = sound.split("/")[1]
 		sound_list.append(sound[:len(sound)-4])
 	return sound_list
+
+@bot.command(pass_context=True, description= \
+	"enter location and get weather")
+async def weather(cxt, loc: str=""):
+	owm = pyowm.OWM("key") # insert owm api key
+	location = owm.weather_at_place(loc)
+	w = location.get_weather()
+	weather_embed = discord.Embed()
+	weather_embed.title = "Weather"
+	weather_embed.colour = 11033400
+	weather_embed.add_field(\
+		name="Condition", \
+		value=w.get_detailed_status(),inline=True)
+	weather_embed.add_field(\
+		name="Temperature", \
+		value=str(w.get_temperature('fahrenheit')["temp"])  + " °F / " + \
+		str(w.get_temperature('celsius')["temp"])  + " °C", \
+		inline=True)
+	await bot.send_message(cxt.message.channel, embed=weather_embed)
 
 @bot.command(pass_context=True, description= \
 	"play a sound in voice, get sound list with " + \
@@ -179,4 +199,4 @@ async def on_message(message):
 
 	await bot.process_commands(message)
 
-bot.run("token")
+bot.run("token") # insert bot token

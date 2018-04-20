@@ -7,6 +7,7 @@ Includes:
 
 ## Dependencies
 ```
+python 3.5+
 discord.py
 libffi-dev
 markovify

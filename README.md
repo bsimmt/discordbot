@@ -3,6 +3,7 @@
 Includes: 
 - markovify implementation of server chatlog 
 - playing sounds and YouTube videos over voicechat
+- weather function
 - trusted users and admin list
 
 ## Dependencies
